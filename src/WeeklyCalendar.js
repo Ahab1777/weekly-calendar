@@ -15,11 +15,21 @@ export const WeeklyCalendar = () => {
         { date: new Date(2024, 7, 10, 16), text: "birthday", howLong: 8}
     ])
 
+
+
     const hourNow= new Date().getHours();
     const minutesNow = new Date().getMinutes();
     
     const nextWeek = () => setMondayDate(addDateBy(mondayDate, 7));
     const prevWeek = () => setMondayDate(addDateBy(mondayDate, -7));
+
+    const onAddEvent = (date) => {
+        const text = prompt('text')
+        const from = prompt('from')
+        const to = prompt('to')
+
+        setTasks((prevTasks => [...prevTasks, {text, date, howLong: to - from}]))
+    }
 
     return (<>
     <FlexBox>
@@ -39,7 +49,9 @@ export const WeeklyCalendar = () => {
             <HGrid cols={7}>
                 {
                     DAYS.map((day, index) => (
-                        <DayWrapper isToday={
+                        <DayWrapper 
+                        onDoubleClick={() => onAddEvent(addDateBy(mondayDate, index))}
+                        isToday={
                             areDatesSame(new Date(), addDateBy(mondayDate, index))}>
                             <p>{day}</p>
                             {tasks.map((task) => 
